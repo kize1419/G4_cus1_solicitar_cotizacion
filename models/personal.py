@@ -1,6 +1,7 @@
 from datetime import date
 from utils.db import db
 from dataclasses import dataclass
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 @dataclass
 class Personal(db.Model):
@@ -23,4 +24,10 @@ class Personal(db.Model):
         self.id_persona=id_persona
         self.fecha_contrato=fecha_contrato
         self.fecha_cese=fecha_cese
-        
+
+#Serializacion con Marshmallow
+class PersonalSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Personal
+        include_relationships = True #para que sus hijos de la clase tambien lo hereden
+        load_instance =True #Para que se puede desSerializar

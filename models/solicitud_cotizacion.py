@@ -1,6 +1,7 @@
 from datetime import date
 from utils.db import db
 from dataclasses import dataclass
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 @dataclass
 class Solicitud_Cotizacion(db.Model):
@@ -24,3 +25,9 @@ class Solicitud_Cotizacion(db.Model):
         self.fecha_cotizacion=fecha_cotizacion
         #self.id_solicitud = id_solicitud
         self.importe=importe
+
+class Solicitud_CotizacionSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Solicitud_Cotizacion
+        include_relationships = True #para que sus hijos de la clase tambien lo hereden
+        load_instance =True #Para que se puede desSerializar

@@ -1,16 +1,16 @@
 from flask import Blueprint, request, jsonify
-from models.solicitud import Solicitud
+from models.solicitud import Solicitud, SolicitudSchema
 from utils.db import db
 
 solicitud = Blueprint('solicitud', __name__)
-
+solicitud_schema = SolicitudSchema()
 @solicitud.route('/solicitud', methods=['GET'])
 def getSolicitud():
     if request.method == 'GET':
         data = {}
         solicitud = Solicitud.query.all()
         data["solicitud"] = solicitud
-        return jsonify(data)
+        return jsonify(solicitud_schema.dump(solicitud, many=True))
     
     
 '''

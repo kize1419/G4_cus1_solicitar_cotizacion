@@ -1,16 +1,16 @@
 from flask import Blueprint, request, jsonify
-from models.solicitud_cotizacion import Solicitud_Cotizacion
+from models.solicitud_cotizacion import Solicitud_Cotizacion,Solicitud_CotizacionSchema
 from utils.db import db
 
 solicitud_cotizacion = Blueprint('solicitud_cotizacion', __name__)
-
+solicitud_cotizacionschema = Solicitud_CotizacionSchema
 @solicitud_cotizacion.route('/solicitud_cotizacion', methods=['GET'])
 def getSolicitud_Cotizacion():
     if request.method == 'GET':
         data = {}
         solicitud_cotizacion = Solicitud_Cotizacion.query.all()
         data["solicitud_cotizacion"] = solicitud_cotizacion
-        return jsonify(data)
+        return jsonify(solicitud_cotizacionschema.dump(solicitud_cotizacion,many=True))
 
 @solicitud_cotizacion.route('/add', methods=['POST'])
 def addSolicitud_Cotizacion():

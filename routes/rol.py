@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
-from models.rol import Rol
+from models.rol import Rol, RolSchema
 from utils.db import db
 
 rol=Blueprint('rol',__name__)
+rol_schema = RolSchema()
 
 @rol.route('/rol',methods=['GET'])
 def getRol():
@@ -10,7 +11,7 @@ def getRol():
         data={}
         rol=Rol.query.all()
         data["rol"]=rol
-        return jsonify(data)
+        return jsonify(rol_schema.dump(rol,many= True))
 
 @rol.route('/rol/add',methods=['POST'])
 def addRol():

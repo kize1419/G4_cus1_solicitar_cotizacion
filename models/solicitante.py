@@ -1,5 +1,6 @@
 from utils.db import db
 from dataclasses import dataclass
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 @dataclass
 class Solicitante(db.Model):
@@ -21,3 +22,9 @@ class Solicitante(db.Model):
         self.id_persona = id_persona
         self.telefono = telefono
         self.correo = correo
+
+class SolicitanteSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Solicitante
+        include_relationships = True #para que sus hijos de la clase tambien lo hereden
+        load_instance =True #Para que se puede desSerializar

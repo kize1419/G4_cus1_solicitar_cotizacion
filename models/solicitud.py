@@ -1,6 +1,7 @@
 from datetime import date
 from utils.db import db
 from dataclasses import dataclass
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 @dataclass
 class Solicitud(db.Model):
@@ -52,3 +53,9 @@ class Solicitud(db.Model):
         self.cant_jardineria = cant_jardineria
         self.fecha_solicitud = fecha_solicitud
         self.nombre_solicitante = nombre_solicitante
+
+class SolicitudSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Solicitud
+        include_relationships = True #para que sus hijos de la clase tambien lo hereden
+        load_instance =True #Para que se puede desSerializar

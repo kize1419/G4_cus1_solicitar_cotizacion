@@ -1,16 +1,18 @@
 from flask import Blueprint, request, jsonify
-from models.solicitante import Solicitante
+from models.solicitante import Solicitante, SolicitanteSchema
 from utils.db import db
 
 solicitante = Blueprint('solicitante', __name__)
+solicitante_schema = SolicitanteSchema()
+
 
 @solicitante.route('/solicitante', methods=['GET'])
 def getSolicitante():
     if request.method == 'GET':
         data = {}
-        solicitantes = Solicitante.query.all()
-        data["solicitante"] = solicitantes
-        return jsonify(data)
+        solicitante = Solicitante.query.all()
+        data["solicitante"] = solicitante
+        return jsonify(solicitante_schema.dump(solicitante,many=True))
     
     
 @solicitante.route('/add', methods=['POST'])
