@@ -4,6 +4,7 @@ from utils.db import db
 
 solicitud_cotizacion = Blueprint('solicitud_cotizacion', __name__)
 solicitud_cotizacionschema = Solicitud_CotizacionSchema
+
 @solicitud_cotizacion.route('/solicitud_cotizacion', methods=['GET'])
 def getSolicitud_Cotizacion():
     if request.method == 'GET':
@@ -11,7 +12,7 @@ def getSolicitud_Cotizacion():
         solicitud_cotizacion = Solicitud_Cotizacion.query.all()
         data["solicitud_cotizacion"] = solicitud_cotizacion
         return jsonify(solicitud_cotizacionschema.dump(solicitud_cotizacion,many=True))
-
+'''
 @solicitud_cotizacion.route('/add', methods=['POST'])
 def addSolicitud_Cotizacion():
     data = {}
@@ -26,6 +27,16 @@ def addSolicitud_Cotizacion():
         db.session.add(new_solicitud_cotizacion)
         db.session.commit()
         return jsonify(data)
+'''
+@solicitud_cotizacion.route('/rol/add', methods=['POST'])
+def addSolicitud_Cotizacion():
+    if request.method == 'POST':
+        solicitud_cotizacion_data = request.get_json()
+        new_solicitud_cotizacion = solicitud_cotizacionschema.load(solicitud_cotizacion_data, session=db.session)
+        db.session.add(new_solicitud_cotizacion)
+        db.session.commit()
+        return jsonify(solicitud_cotizacionschema.dump(new_solicitud_cotizacion))
+
 
 @solicitud_cotizacion.route('/update', methods=['POST'])
 def updateSolicitud_Cotizacion():

@@ -14,6 +14,7 @@ def getpersonal():
         # return (data)
         return jsonify(personal_schema.dump(personal,many=True)) #Devolvera la lista de Personal
 
+'''
 @personal.route('/personal/add',methods=['POST'])
 def addpersonal():
     data={}
@@ -24,7 +25,17 @@ def addpersonal():
         db.session.add(new_personal)
         db.session.commit()
         return jsonify(data)
-    
+'''
+@personal.route('/personal/add', methods=['POST'])
+def addpersonal():
+    if request.method == 'POST':
+        personal_data = request.get_json()
+        new_personal = personal_schema.load(personal_data, session=db.session)
+        db.session.add(new_personal)
+        db.session.commit()
+
+        return jsonify(personal_schema.dump(new_personal))
+
 @personal.route('/update',methods=['POST'])
 def updatepersonal():
     data={}

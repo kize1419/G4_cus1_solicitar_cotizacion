@@ -14,7 +14,7 @@ def getSolicitante():
         data["solicitante"] = solicitante
         return jsonify(solicitante_schema.dump(solicitante,many=True))
     
-    
+'''    
 @solicitante.route('/add', methods=['POST'])
 def addSolicitante():
     data = {}
@@ -30,6 +30,18 @@ def addSolicitante():
         db.session.add(new_solicitante)
         db.session.commit()
         return jsonify(data)
+'''
+
+@solicitante.route('/solicitante/add', methods=['POST'])
+def addSolicitante():
+    if request.method == 'POST':
+        solicitante_data = request.get_json()
+        new_solicitante = solicitante_schema.load(solicitante_data, session=db.session)
+        db.session.add(new_solicitante)
+        db.session.commit()
+        return jsonify(solicitante_schema.dump(new_solicitante))
+
+
 """""
 @solicitante.route('/add', methods=['POST'])
 def addSolicitante():

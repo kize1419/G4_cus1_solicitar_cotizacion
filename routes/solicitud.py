@@ -12,7 +12,16 @@ def getSolicitud():
         data["solicitud"] = solicitud
         return jsonify(solicitud_schema.dump(solicitud, many=True))
     
-    
+@solicitud.route('/solicitud/add', methods=['POST'])
+def addSolicitud():
+    if request.method == 'POST':
+        solicitante_data = request.get_json()
+        new_solcitante = solicitud_schema.load(solicitante_data, session=db.session)
+        db.session.add(new_solcitante)
+        db.session.commit()
+        return jsonify(solicitud_schema.dump(new_solcitante))
+
+
 '''
 @solicitud.route('/add', methods=['POST'])
 def addSolicitud():

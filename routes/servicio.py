@@ -5,6 +5,8 @@ from utils.db import db
 
 servicio = Blueprint('servicio', __name__)
 servicio_schema = ServicioSchema()
+
+
 @servicio.route('/servicio', methods=['GET'])
 def getServicio():
     if request.method == 'GET':
@@ -12,7 +14,7 @@ def getServicio():
         servicio = Servicio.query.all()
         data["servicio"] = servicio
         return jsonify(servicio_schema.dump(servicio,many=True))
-
+'''
 @servicio.route('/add', methods=['POST'])
 def addServicio():
     data = {}
@@ -24,6 +26,16 @@ def addServicio():
         db.session.add(new_servicio)
         db.session.commit()
         return jsonify(data)
+'''
+
+@servicio.route('/servicio/add', methods=['POST'])
+def add_rol():
+    if request.method == 'POST':
+        servicio_data = request.get_json()
+        new_servicio = servicio_schema.load(servicio_data, session=db.session)
+        db.session.add(new_servicio)
+        db.session.commit()
+        return jsonify(servicio_data.dump(new_servicio))
 
 @servicio.route('/update', methods=['POST'])
 def updateServicio():

@@ -30,13 +30,10 @@ def addRol():
 @rol.route('/rol/add', methods=['POST'])
 def add_rol():
     if request.method == 'POST':
-        rol_schema = RolSchema()
         rol_data = request.get_json()
         new_rol = rol_schema.load(rol_data, session=db.session)
-
         db.session.add(new_rol)
         db.session.commit()
-
         return jsonify(rol_schema.dump(new_rol))
 
 @rol.route('/rol/update',methods=['POST'])
