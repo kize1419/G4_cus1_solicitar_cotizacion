@@ -10,22 +10,34 @@ def getRol():
     if request.method=='GET':
         data={}
         rol=Rol.query.all()
-        data["rol"]=rol
+        #data["rol"]=rol
         return jsonify(rol_schema.dump(rol,many= True))
-
+'''
 @rol.route('/rol/add',methods=['POST'])
 def addRol():
     data={}
     if request.method=='POST':
         body=request.get_json()
-        id_rol=body['id_rol']
-        descripcion=body['descripcion']
-        
-        new_rol= Rol(id_rol,descripcion)
+        #id_rol=body['id_rol']
+        #descripcion=body['descripcion']
+        new_rol=rol_schema.load(body,session=db.session)
+        #new_rol= Rol(id_rol,descripcion)
         db.session.add(new_rol)
         db.session.commit()
-        return jsonify(data)
+        #return jsonify(new_rol.dump(new_rol,many=True))
+        return rol_schema.jsonify(new_rol)
+'''  
+@rol.route('/rol/add', methods=['POST'])
+def add_rol():
+    if request.method == 'POST':
+        rol_schema = RolSchema()
+        rol_data = request.get_json()
+        new_rol = rol_schema.load(rol_data, session=db.session)
 
+        db.session.add(new_rol)
+        db.session.commit()
+
+        return jsonify(rol_schema.dump(new_rol))
 
 @rol.route('/rol/update',methods=['POST'])
 def updateRol():
